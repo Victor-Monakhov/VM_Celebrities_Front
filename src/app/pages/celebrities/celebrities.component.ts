@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import {CelebritiesHeaderComponent} from "./components/celebrities-header/celebrities-header.component";
+
+import { CelebritiesHeaderComponent } from './components/celebrities-header/celebrities-header.component';
 
 @Component({
   selector: 'app-celebrities',
-  standalone: true,
   imports: [
-    CelebritiesHeaderComponent
+    CelebritiesHeaderComponent,
   ],
   templateUrl: './celebrities.component.html',
   styleUrl: './celebrities.component.scss',
