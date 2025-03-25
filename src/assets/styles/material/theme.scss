@@ -1,7 +1,8 @@
 @use '@angular/material' as mat;
 @use 'sass:map';
 
-@include mat.core();
+@include mat.elevation-classes();
+@include mat.app-background();
 
 @function _patch-error-palette($palette) {
   @return map.merge(
@@ -114,7 +115,8 @@ $VM_Celebrities-palette: _patch-error-palette((
 
 html {
   color-scheme: dark;
-  @include mat.core();
+  @include mat.elevation-classes();
+  @include mat.app-background();
   @include mat.theme((
     color: $VM_Celebrities-palette,
     typography: "Roboto",
