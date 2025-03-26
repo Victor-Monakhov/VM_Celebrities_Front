@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, output } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 
 @Component({
@@ -11,5 +11,16 @@ import { MatButton } from '@angular/material/button';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CelebritiesHeaderComponent {
+
+  showAll = output<void>();
+  reset = output<void>();
+
+  onShowAll(): void {
+    this.showAll.emit();
+  }
+
+  onReset(): void {
+    this.reset.emit();
+  }
 
 }

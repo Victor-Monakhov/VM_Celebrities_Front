@@ -21,6 +21,11 @@
       justify-content: flex-end;
       width: 100%;
       gap: 20px;
+
+      .action-btn {
+        width: 170px;
+        font-size: 18px;
+      }
     }
   }
 }

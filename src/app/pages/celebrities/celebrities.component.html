@@ -1,4 +1,14 @@
 <div class="wrapper">
-  <app-celebrities-header ngSkipHydration></app-celebrities-header>
-  <app-celebrities-content></app-celebrities-content>
+  <app-celebrities-header
+    ngSkipHydration
+    (showAll)="onShowAll()"
+    (reset)="onReset()">
+  </app-celebrities-header>
+  <app-celebrities-content
+    [celebrities]="celebrities()"
+    [loader]="loader()"
+    (removeCelebrity)="onRemoveCelebrity($event)"
+    (editCelebrity)="onEditCelebrity($event)"
+    (searchCelebrity)="onSearchCelebrity($event)">
+  </app-celebrities-content>
 </div>

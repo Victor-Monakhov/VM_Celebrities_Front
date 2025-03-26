@@ -1,7 +1,14 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MatDialog } from '@angular/material/dialog';
 
+import { catchError, debounceTime, EMPTY, exhaustMap, filter, Subject, switchMap } from 'rxjs';
+
+import { CelebritiesContentComponent } from './components/celebrities-content/celebrities-content.component';
+import { CelebritiesEditDialogComponent } from './components/celebrities-edit-dialog/celebrities-edit-dialog.component';
 import { CelebritiesHeaderComponent } from './components/celebrities-header/celebrities-header.component';
-import {CelebritiesContentComponent} from "./components/celebrities-content/celebrities-content.component";
+import { ICelebrity } from './interfaces/celebrities.interface';
+import { CelebritiesService } from './services/celebrities.service';
 
 @Component({
   selector: 'app-celebrities',
@@ -13,6 +20,125 @@ import {CelebritiesContentComponent} from "./components/celebrities-content/cele
   styleUrl: './celebrities.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CelebritiesComponent {
+export class CelebritiesComponent implements OnInit {
 
+  private readonly celebritiesService = inject(CelebritiesService);
+  private readonly dialog = inject(MatDialog);
+  private readonly dr = inject(DestroyRef);
+
+  celebrities = signal<ICelebrity[]>([]);
+  loader = signal<boolean>(false);
+
+  private allCelebrities$ = new Subject<boolean>();
+  private removeCelebrity$ = new Subject<number>();
+  private editCelebrity$ = new Subject<number>();
+  private searchCelebrity$ = new Subject<string>();
+
+  ngOnInit(): void {
+    this.observeAllCelebrities();
+    this.observeRemoveCelebrity();
+    this.observeSearchCelebrity();
+    this.observeEditCelebrity();
+  }
+
+  onShowAll(): void {
+    this.allCelebrities$.next(false);
+  }
+
+  onReset(): void {
+    this.allCelebrities$.next(true);
+  }
+
+  onRemoveCelebrity(id: number): void {
+    this.removeCelebrity$.next(id);
+  }
+
+  onEditCelebrity(id: number): void {
+    this.editCelebrity$.next(id);
+  }
+
+  onSearchCelebrity(name: string): void {
+    this.searchCelebrity$.next(name);
+  }
+
+  private observeAllCelebrities(): void {
+    this.allCelebrities$.pipe(
+      filter(() => !this.loader()),
+      debounceTime(300),
+      exhaustMap(isReset => {
+        this.loader.set(true);
+        return this.celebritiesService.getAllCelebrities(isReset);
+      }),
+      catchError(() => {
+        this.loader.set(false);
+        return EMPTY;
+      }),
+      takeUntilDestroyed(this.dr),
+    ).subscribe(celebrities => {
+      this.celebrities.set(celebrities);
+      this.loader.set(false);
+    });
+  }
+
+  private observeRemoveCelebrity(): void {
+    this.removeCelebrity$.pipe(
+      debounceTime(300),
+      filter(() => !this.loader()),
+      exhaustMap(id => {
+        this.loader.set(true);
+        return this.celebritiesService.removeCelebrity(id);
+      }),
+      catchError(() => {
+        this.loader.set(false);
+        return EMPTY;
+      }),
+      takeUntilDestroyed(this.dr),
+    ).subscribe(celebrities => {
+      this.celebrities.set(celebrities);
+      this.loader.set(false);
+    });
+  }
+
+  private observeSearchCelebrity(): void {
+    this.searchCelebrity$.pipe(
+      debounceTime(300),
+      filter(() => !this.loader()),
+      exhaustMap(name => {
+        this.loader.set(true);
+        return this.celebritiesService.searchCelebrity(name);
+      }),
+      catchError(() => {
+        this.loader.set(false);
+        return EMPTY;
+      }),
+      takeUntilDestroyed(this.dr),
+    ).subscribe(celebrities => {
+      this.celebrities.set(celebrities);
+      this.loader.set(false);
+    });
+  }
+
+  private observeEditCelebrity(): void {
+    this.editCelebrity$.pipe(
+      filter(() => !this.loader()),
+      switchMap(id => this.dialog.open(CelebritiesEditDialogComponent, {
+        data: this.celebrities().find(celebrity => celebrity.id === id),
+        hasBackdrop: true,
+        panelClass: 'celebrities-dialog',
+      }).afterClosed()),
+      filter(celebrity => !!celebrity),
+      switchMap(celebrity => {
+        this.loader.set(true);
+        return this.celebritiesService.editCelebrity(celebrity);
+      }),
+      catchError(() => {
+        this.loader.set(false);
+        return EMPTY;
+      }),
+      takeUntilDestroyed(this.dr),
+    ).subscribe(celebrities => {
+      this.celebrities.set(celebrities);
+      this.loader.set(false);
+    });
+  }
 }

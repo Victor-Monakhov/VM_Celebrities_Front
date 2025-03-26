@@ -2,17 +2,23 @@
   color: var(--mat-sys-on-background);
   flex-grow: 1;
 
+  $header-height: 90px;
+  $content-padding: 50px;
+  $content-height: calc(100vh - #{$header-height} - #{$content-padding});
+
   .wrapper {
     display: flex;
     flex-direction: column;
-    padding: 0 50px 50px;
-    height: calc(100% - 70px);
+    padding: 0 50px $content-padding;
+    height: $content-height;
+
+    $search-height: 80px;
 
     .search {
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 80px;
+      height: $search-height;
       gap: 30px;
       font-size: 32px;
       flex-shrink: 0;
@@ -22,15 +28,28 @@
       }
     }
 
+    $celebrities-wrapper-padding: 15px;
+
     .celebrities-wrapper {
       border: 1px solid var(--mat-sys-primary);
       border-radius: 20px;
-      height: calc(100% - 80px);
-      padding: 15px;
+      height: calc(#{$content-height} - #{$search-height});
+      padding: $celebrities-wrapper-padding;
+
+      .no-celebrities {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .loader {
+        width: 50px;
+        height: 50px;
+      }
 
       .celebrities {
         border-radius: 15px;
-        height: 100%;
+        height: calc(#{$content-height} - #{$search-height} - 2 * #{$celebrities-wrapper-padding});
         overflow: auto;
 
         .celebrities-table {
@@ -48,6 +67,7 @@
 
           .column-head {
             text-transform: capitalize !important;
+            color: var(--mat-sys-primary);
           }
 
           .btn-column {
@@ -85,46 +105,31 @@
         .table-element-row td {
           border-bottom-width: 0;
         }
-      }
 
-      .example-element-detail-wrapper {
-        overflow: hidden;
-        display: grid;
-        grid-template-rows: 0fr;
-        grid-template-columns: 100%;
-        transition: grid-template-rows 225ms cubic-bezier(0.4, 0, 0.2, 1);
-      }
+        .celebrity-details-wrapper {
+          overflow: hidden;
+          display: grid;
+          grid-template-rows: 0fr;
+          grid-template-columns: 100%;
+          transition: grid-template-rows 225ms cubic-bezier(0.4, 0, 0.2, 1);
 
-      .example-element-detail-wrapper-expanded {
-        grid-template-rows: 1fr;
-      }
+          .celebrity-details {
+            display: flex;
+            min-height: 0;
 
-      .example-element-detail {
-        display: flex;
-        min-height: 0;
-      }
+            .celebrity-picture {
+              margin: 8px 0;
+            }
 
-      .example-element-diagram {
-        min-width: 80px;
-        border: 2px solid black;
-        padding: 8px;
-        font-weight: lighter;
-        margin: 8px 0;
-        height: 104px;
-      }
+            .celebrity-info {
+              padding: 16px;
+            }
+          }
+        }
 
-      .example-element-symbol {
-        font-weight: bold;
-        font-size: 40px;
-        line-height: normal;
-      }
-
-      .example-element-description {
-        padding: 16px;
-      }
-
-      .example-element-description-attribution {
-        opacity: 0.5;
+        .celebrity-details-wrapper-expanded {
+          grid-template-rows: 1fr;
+        }
       }
     }
   }

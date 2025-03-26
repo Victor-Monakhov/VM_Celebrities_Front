@@ -1,0 +1,10 @@
+.celebrities-dialog {
+  width: 500px;
+  height: 600px;
+  border-radius: 8px;
+
+  .mat-mdc-dialog-surface {
+    border-radius: 8px;
+    background: var(--mat-sys-background);
+  }
+}
