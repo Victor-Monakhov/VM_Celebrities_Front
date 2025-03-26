@@ -6,11 +6,11 @@ describe('PreloaderComponent', () => {
   let component: PreloaderComponent;
   let fixture: ComponentFixture<PreloaderComponent>;
 
-  beforeEach(async () => {
+  beforeEach(async() => {
     await TestBed.configureTestingModule({
-      imports: [PreloaderComponent]
+      imports: [PreloaderComponent],
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(PreloaderComponent);
     component = fixture.componentInstance;

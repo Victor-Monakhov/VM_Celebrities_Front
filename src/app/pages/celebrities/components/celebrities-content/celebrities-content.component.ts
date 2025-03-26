@@ -7,10 +7,10 @@ import {
   MatTableModule,
 } from '@angular/material/table';
 
+import { PreloaderComponent } from '../../../../shared/components/preloader/preloader.component';
 import { celebrityPropsDescription, ECelebrityProps } from '../../enums/celebrities.enum';
 import { ICelebrity } from '../../interfaces/celebrities.interface';
 import { CelebrityValuePipe } from '../../pipes/celebrity-value.pipe';
-import {PreloaderComponent} from "../../../../shared/components/preloader/preloader.component";
 
 @Component({
   selector: 'app-celebrities-content',
