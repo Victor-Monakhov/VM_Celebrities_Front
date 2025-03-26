@@ -6,11 +6,11 @@ describe('CelebritiesHeaderComponent', () => {
   let component: CelebritiesHeaderComponent;
   let fixture: ComponentFixture<CelebritiesHeaderComponent>;
 
-  beforeEach(async () => {
+  beforeEach(async() => {
     await TestBed.configureTestingModule({
-      imports: [CelebritiesHeaderComponent]
+      imports: [CelebritiesHeaderComponent],
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(CelebritiesHeaderComponent);
     component = fixture.componentInstance;

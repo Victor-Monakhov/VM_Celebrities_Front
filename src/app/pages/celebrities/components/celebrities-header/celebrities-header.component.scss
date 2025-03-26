@@ -1,6 +1,26 @@
 :host {
+  color: var(--mat-sys-on-background);
+  flex-shrink: 0;
+
   .wrapper {
-    height: 70px;
-    background: var(--mat-sys-primary);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 80px;
+    padding: 0 50px;
+    margin-bottom: 20px;
+    background: var(--mat-sys-background);
+    box-shadow: 0 1px 10px -7px var(--mat-sys-on-background);
+
+    .title {
+      flex-shrink: 0;
+    }
+
+    .options {
+      display: flex;
+      justify-content: flex-end;
+      width: 100%;
+      gap: 20px;
+    }
   }
 }
