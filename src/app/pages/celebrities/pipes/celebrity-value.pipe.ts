@@ -7,7 +7,7 @@ import { ECelebrityProps } from '../enums/celebrities.enum';
 })
 export class CelebrityValuePipe implements PipeTransform {
 
-  transform(value: string | string[], column: ECelebrityProps): string {
+  public transform(value: string | string[], column: ECelebrityProps): string {
     if (Array.isArray(value)) {
       return value.join(',\n');
     }

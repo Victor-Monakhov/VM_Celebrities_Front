@@ -46,23 +46,24 @@ import { ICelebrity, ICelebrityForm } from '../../interfaces/celebrities.interfa
 })
 export class CelebritiesAddEditDialogComponent implements OnInit {
 
-  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
-  readonly genders = ['Male', 'Female'];
   private readonly dialogRef = inject(MatDialogRef<CelebritiesAddEditDialogComponent>);
   private readonly data = inject<ICelebrity>(MAT_DIALOG_DATA);
 
-  form!: FormGroup<ICelebrityForm>;
+  public readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+  public readonly genders = ['Male', 'Female'];
 
-  celebrity = signal<ICelebrity>(this.data ?? {});
-  editorTitle = computed<string>(() => `Edit ${this.celebrity()?.name?.split(' ')?.[0]}`);
-  roles = signal(this.celebrity()?.roles ?? []);
-  currentRole!: WritableSignal<FormControl<string>>;
+  public form!: FormGroup<ICelebrityForm>;
 
-  ngOnInit(): void {
+  public celebrity = signal<ICelebrity>(this.data ?? {});
+  public editorTitle = computed<string>(() => `Edit ${this.celebrity()?.name?.split(' ')?.[0]}`);
+  public roles = signal(this.celebrity()?.roles ?? []);
+  public currentRole!: WritableSignal<FormControl<string>>;
+
+  public ngOnInit(): void {
     this.initForm();
   }
 
-  onConfirm(): void {
+  public onConfirm(): void {
     if (this.form.valid) {
       this.dialogRef.close({
         ...this.celebrity(),
@@ -75,7 +76,7 @@ export class CelebritiesAddEditDialogComponent implements OnInit {
     }
   }
 
-  add(event: MatChipInputEvent): void {
+  public add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
     if (value) {
       this.roles.update(fruits => [...fruits, value]);
@@ -83,7 +84,7 @@ export class CelebritiesAddEditDialogComponent implements OnInit {
     this.currentRole().patchValue('');
   }
 
-  remove(role: string): void {
+  public remove(role: string): void {
     this.roles.update(roles => {
       const index = roles.indexOf(role);
       if (index < 0) {

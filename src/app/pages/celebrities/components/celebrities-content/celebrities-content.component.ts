@@ -32,11 +32,13 @@ import { CelebrityValuePipe } from '../../pipes/celebrity-value.pipe';
 })
 export class CelebritiesContentComponent {
 
-  removeCelebrity = output<number>();
-  editCelebrity = output<number>();
-  searchCelebrity = output<string>();
+  public celebrities = input<ICelebrity[]>([]);
+  public loader = input<boolean>(false);
+  public removeCelebrity = output<number>();
+  public editCelebrity = output<number>();
+  public searchCelebrity = output<string>();
 
-  columnsToDisplay: ECelebrityProps[] = [
+  public readonly columnsToDisplay: ECelebrityProps[] = [
     ECelebrityProps.Id,
     ECelebrityProps.Name,
     ECelebrityProps.Gender,
@@ -44,33 +46,29 @@ export class CelebritiesContentComponent {
     ECelebrityProps.Roles,
     ECelebrityProps.Movie,
   ];
-  columnTitles: { [key in ECelebrityProps]: string } = celebrityPropsDescription;
-  columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];
+  public columnTitles: { [key in ECelebrityProps]: string } = celebrityPropsDescription;
+  public columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];
+  public expandedElement!: ICelebrity | null;
 
-  celebrities = input<ICelebrity[]>([]);
-  loader = input<boolean>(false);
-
-  expandedElement!: ICelebrity | null;
-
-  isExpanded(element: ICelebrity): boolean {
+  public isExpanded(element: ICelebrity): boolean {
     return this.expandedElement === element;
   }
 
-  toggle(element: ICelebrity): void {
+  public toggle(element: ICelebrity): void {
     this.expandedElement = this.isExpanded(element) ? null : element;
   }
 
-  onRemoveCelebrity(event: MouseEvent, id: number): void {
+  public onRemoveCelebrity(event: MouseEvent, id: number): void {
     event.stopImmediatePropagation();
     this.removeCelebrity.emit(id);
   }
 
-  onEditCelebrity(event: MouseEvent, id: number): void {
+  public onEditCelebrity(event: MouseEvent, id: number): void {
     event.stopImmediatePropagation();
     this.editCelebrity.emit(id);
   }
 
-  onSearch(event: Event): void {
+  public onSearch(event: Event): void {
     const el = event.target as HTMLInputElement;
     const value = el.value;
     if (value) {

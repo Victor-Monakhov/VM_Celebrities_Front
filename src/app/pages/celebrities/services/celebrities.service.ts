@@ -12,26 +12,26 @@ export class CelebritiesService {
 
   private readonly http = inject(HttpClient);
 
-  getAllCelebrities(isReset: boolean): Observable<ICelebrity[]> {
+  public getAllCelebrities(isReset: boolean): Observable<ICelebrity[]> {
     return this.http.get<ICelebrity[]>(`http://localhost:5263/api/celebrity/all?reset=${isReset}`);
   }
 
-  removeCelebrity(id: number): Observable<ICelebrity[]> {
+  public removeCelebrity(id: number): Observable<ICelebrity[]> {
     return this.http.delete<ICelebrity[]>(`http://localhost:5263/api/celebrity/delete/${id}`);
   }
 
-  searchCelebrity(name: string): Observable<ICelebrity[]> {
+  public searchCelebrity(name: string): Observable<ICelebrity[]> {
     return this.http.get<ICelebrity[]>(`http://localhost:5263/api/celebrity/search?name=${name}`);
   }
 
-  editCelebrity(celebrity: ICelebrity): Observable<ICelebrity[]> {
+  public editCelebrity(celebrity: ICelebrity): Observable<ICelebrity[]> {
     return this.http.put<ICelebrity[]>(
       `http://localhost:5263/api/celebrity/update/${celebrity.id}`,
       celebrity,
     );
   }
 
-  addCelebrity(celebrity: ICelebrity): Observable<ICelebrity[]> {
+  public addCelebrity(celebrity: ICelebrity): Observable<ICelebrity[]> {
     return this.http.post<ICelebrity[]>(
       `http://localhost:5263/api/celebrity/add`,
       celebrity,

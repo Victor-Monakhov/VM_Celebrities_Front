@@ -26,16 +26,16 @@ export class CelebritiesComponent implements OnInit {
   private readonly dialog = inject(MatDialog);
   private readonly dr = inject(DestroyRef);
 
-  celebrities = signal<ICelebrity[]>([]);
-  loader = signal<boolean>(false);
-
   private allCelebrities$ = new Subject<boolean>();
   private removeCelebrity$ = new Subject<number>();
   private editCelebrity$ = new Subject<number>();
   private addCelebrity$ = new Subject<void>();
   private searchCelebrity$ = new Subject<string>();
 
-  ngOnInit(): void {
+  public celebrities = signal<ICelebrity[]>([]);
+  public loader = signal<boolean>(false);
+
+  public ngOnInit(): void {
     this.observeAllCelebrities();
     this.observeRemoveCelebrity();
     this.observeSearchCelebrity();
@@ -43,27 +43,27 @@ export class CelebritiesComponent implements OnInit {
     this.observeAddCelebrity();
   }
 
-  onShowAll(): void {
+  public onShowAll(): void {
     this.allCelebrities$.next(false);
   }
 
-  onReset(): void {
+  public onReset(): void {
     this.allCelebrities$.next(true);
   }
 
-  onAddCelebrity(): void {
+  public onAddCelebrity(): void {
     this.addCelebrity$.next();
   }
 
-  onRemoveCelebrity(id: number): void {
+  public onRemoveCelebrity(id: number): void {
     this.removeCelebrity$.next(id);
   }
 
-  onEditCelebrity(id: number): void {
+  public onEditCelebrity(id: number): void {
     this.editCelebrity$.next(id);
   }
 
-  onSearchCelebrity(name: string): void {
+  public onSearchCelebrity(name: string): void {
     this.searchCelebrity$.next(name);
   }
 

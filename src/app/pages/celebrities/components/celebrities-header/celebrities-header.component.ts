@@ -12,19 +12,19 @@ import { MatButton } from '@angular/material/button';
 })
 export class CelebritiesHeaderComponent {
 
-  showAll = output<void>();
-  reset = output<void>();
-  addNew = output<void>();
+  public showAll = output<void>();
+  public reset = output<void>();
+  public addNew = output<void>();
 
-  onShowAll(): void {
+  public onShowAll(): void {
     this.showAll.emit();
   }
 
-  onReset(): void {
+  public onReset(): void {
     this.reset.emit();
   }
 
-  onAddNew(): void {
+  public onAddNew(): void {
     this.addNew.emit();
   }
 
