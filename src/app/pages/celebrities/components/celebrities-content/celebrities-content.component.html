@@ -69,7 +69,7 @@
                    [class.celebrity-details-wrapper-expanded]="isExpanded(element)">
                 <div class="celebrity-details">
                   <div class="celebrity-picture">
-                    <img alt="celebrity picture" width="60" height="60" [ngSrc]="element.imageUrl"/>
+                    <img alt="celebrity picture" width="60" height="60" [ngSrc]="element.imageUrl || '#'"/>
                   </div>
                   <div class="celebrity-info">
                     {{ element.info }}

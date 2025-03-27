@@ -1,7 +1,11 @@
 <div class="wrapper">
   <div class="title-wrapper">
-    <img class="picture" alt="celebrity-picture" width="60" height="60" [ngSrc]="celebrity().imageUrl"/>
-    <h2 class="title">{{editorTitle()}}</h2>
+    @if (celebrity().id) {
+      <img class="picture" alt="celebrity-picture" width="60" height="60" [ngSrc]="celebrity().imageUrl || '#'"/>
+    }
+    <h2 [ngClass]="{'title': true, 'title-center': !celebrity().id}">
+      {{ celebrity().id ? editorTitle() : 'Add New Celebrity' }}
+    </h2>
   </div>
   <form class="celebrity-form" [formGroup]="form">
 
@@ -63,7 +67,7 @@
     type="button"
     class="edit-btn"
     [disabled]="form.invalid"
-    (click)="onEdit()">
-    Edit
+    (click)="onConfirm()">
+    {{ celebrity().id ? 'Edit' : 'Add' }}
   </button>
 </div>

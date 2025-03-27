@@ -10,8 +10,9 @@
     .title-wrapper {
       display: flex;
       align-items: flex-end;
+      width: 100%;
       padding: 5px;
-      gap: 10px;
+      gap: 20px;
       overflow: hidden;
       flex-shrink: 0;
 
@@ -28,6 +29,11 @@
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
+      }
+
+      .title-center {
+        text-align: center;
+        width: 100%;
       }
     }
 

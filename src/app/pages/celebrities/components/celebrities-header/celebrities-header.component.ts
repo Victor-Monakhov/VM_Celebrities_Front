@@ -14,6 +14,7 @@ export class CelebritiesHeaderComponent {
 
   showAll = output<void>();
   reset = output<void>();
+  addNew = output<void>();
 
   onShowAll(): void {
     this.showAll.emit();
@@ -21,6 +22,10 @@ export class CelebritiesHeaderComponent {
 
   onReset(): void {
     this.reset.emit();
+  }
+
+  onAddNew(): void {
+    this.addNew.emit();
   }
 
 }

@@ -116,6 +116,7 @@
           .celebrity-details {
             display: flex;
             min-height: 0;
+            overflow: hidden;
 
             .celebrity-picture {
               margin: 8px 0;
@@ -123,6 +124,8 @@
 
             .celebrity-info {
               padding: 16px;
+              max-width: calc(100% - 60px);
+              word-wrap: break-word;
             }
           }
         }

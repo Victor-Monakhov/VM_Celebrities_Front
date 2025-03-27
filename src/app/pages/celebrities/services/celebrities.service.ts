@@ -30,4 +30,11 @@ export class CelebritiesService {
       celebrity,
     );
   }
+
+  addCelebrity(celebrity: ICelebrity): Observable<ICelebrity[]> {
+    return this.http.post<ICelebrity[]>(
+      `http://localhost:5263/api/celebrity/add`,
+      celebrity,
+    );
+  }
 }

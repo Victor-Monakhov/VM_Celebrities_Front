@@ -5,7 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { catchError, debounceTime, EMPTY, exhaustMap, filter, Subject, switchMap } from 'rxjs';
 
 import { CelebritiesContentComponent } from './components/celebrities-content/celebrities-content.component';
-import { CelebritiesEditDialogComponent } from './components/celebrities-edit-dialog/celebrities-edit-dialog.component';
+import { CelebritiesAddEditDialogComponent } from './components/celebrities-add-edit-dialog/celebrities-add-edit-dialog.component';
 import { CelebritiesHeaderComponent } from './components/celebrities-header/celebrities-header.component';
 import { ICelebrity } from './interfaces/celebrities.interface';
 import { CelebritiesService } from './services/celebrities.service';
@@ -32,6 +32,7 @@ export class CelebritiesComponent implements OnInit {
   private allCelebrities$ = new Subject<boolean>();
   private removeCelebrity$ = new Subject<number>();
   private editCelebrity$ = new Subject<number>();
+  private addCelebrity$ = new Subject<void>();
   private searchCelebrity$ = new Subject<string>();
 
   ngOnInit(): void {
@@ -39,6 +40,7 @@ export class CelebritiesComponent implements OnInit {
     this.observeRemoveCelebrity();
     this.observeSearchCelebrity();
     this.observeEditCelebrity();
+    this.observeAddCelebrity();
   }
 
   onShowAll(): void {
@@ -47,6 +49,10 @@ export class CelebritiesComponent implements OnInit {
 
   onReset(): void {
     this.allCelebrities$.next(true);
+  }
+
+  onAddCelebrity(): void {
+    this.addCelebrity$.next();
   }
 
   onRemoveCelebrity(id: number): void {
@@ -103,7 +109,7 @@ export class CelebritiesComponent implements OnInit {
     this.searchCelebrity$.pipe(
       debounceTime(300),
       filter(() => !this.loader()),
-      exhaustMap(name => {
+      switchMap(name => {
         this.loader.set(true);
         return this.celebritiesService.searchCelebrity(name);
       }),
@@ -121,7 +127,7 @@ export class CelebritiesComponent implements OnInit {
   private observeEditCelebrity(): void {
     this.editCelebrity$.pipe(
       filter(() => !this.loader()),
-      switchMap(id => this.dialog.open(CelebritiesEditDialogComponent, {
+      switchMap(id => this.dialog.open(CelebritiesAddEditDialogComponent, {
         data: this.celebrities().find(celebrity => celebrity.id === id),
         hasBackdrop: true,
         panelClass: 'celebrities-dialog',
@@ -130,6 +136,30 @@ export class CelebritiesComponent implements OnInit {
       switchMap(celebrity => {
         this.loader.set(true);
         return this.celebritiesService.editCelebrity(celebrity);
+      }),
+      catchError(() => {
+        this.loader.set(false);
+        return EMPTY;
+      }),
+      takeUntilDestroyed(this.dr),
+    ).subscribe(celebrities => {
+      this.celebrities.set(celebrities);
+      this.loader.set(false);
+    });
+  }
+
+  private observeAddCelebrity(): void {
+    this.addCelebrity$.pipe(
+      filter(() => !this.loader()),
+      switchMap(() => this.dialog.open(CelebritiesAddEditDialogComponent, {
+        data: null,
+        hasBackdrop: true,
+        panelClass: 'celebrities-dialog',
+      }).afterClosed()),
+      filter(celebrity => !!celebrity),
+      switchMap(celebrity => {
+        this.loader.set(true);
+        return this.celebritiesService.addCelebrity(celebrity);
       }),
       catchError(() => {
         this.loader.set(false);

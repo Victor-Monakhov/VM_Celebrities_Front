@@ -1,5 +1,5 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { NgOptimizedImage } from '@angular/common';
+import { NgClass, NgOptimizedImage } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -23,7 +23,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { ICelebrity, ICelebrityForm } from '../../interfaces/celebrities.interface';
 
 @Component({
-  selector: 'app-celebrities-edit-dialog',
+  selector: 'app-celebrities-add-edit-dialog',
   imports: [
     NgOptimizedImage,
     ReactiveFormsModule,
@@ -37,31 +37,32 @@ import { ICelebrity, ICelebrityForm } from '../../interfaces/celebrities.interfa
     MatChipsModule,
     MatDatepickerInput,
     MatButtonModule,
+    NgClass,
   ],
   providers: [provideNativeDateAdapter()],
-  templateUrl: './celebrities-edit-dialog.component.html',
-  styleUrl: './celebrities-edit-dialog.component.scss',
+  templateUrl: './celebrities-add-edit-dialog.component.html',
+  styleUrl: './celebrities-add-edit-dialog.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CelebritiesEditDialogComponent implements OnInit {
+export class CelebritiesAddEditDialogComponent implements OnInit {
 
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   readonly genders = ['Male', 'Female'];
-  private readonly dialogRef = inject(MatDialogRef<CelebritiesEditDialogComponent>);
+  private readonly dialogRef = inject(MatDialogRef<CelebritiesAddEditDialogComponent>);
   private readonly data = inject<ICelebrity>(MAT_DIALOG_DATA);
 
   form!: FormGroup<ICelebrityForm>;
 
-  celebrity = signal<ICelebrity>(this.data);
-  editorTitle = computed<string>(() => `Edit ${this.celebrity().name.split(' ')[0]}`);
-  roles = signal(this.celebrity().roles);
+  celebrity = signal<ICelebrity>(this.data ?? {});
+  editorTitle = computed<string>(() => `Edit ${this.celebrity()?.name?.split(' ')?.[0]}`);
+  roles = signal(this.celebrity()?.roles ?? []);
   currentRole!: WritableSignal<FormControl<string>>;
 
   ngOnInit(): void {
     this.initForm();
   }
 
-  onEdit(): void {
+  onConfirm(): void {
     if (this.form.valid) {
       this.dialogRef.close({
         ...this.celebrity(),
@@ -95,25 +96,25 @@ export class CelebritiesEditDialogComponent implements OnInit {
 
   private initForm(): void {
     this.form = new FormGroup<ICelebrityForm>({
-      name: new FormControl<string>(this.celebrity().name, {
+      name: new FormControl<string>(this.celebrity()?.name ?? '', {
         validators: [Validators.required],
         nonNullable: true,
       }),
-      gender: new FormControl<string>(this.celebrity().gender, {
+      gender: new FormControl<string>(this.celebrity()?.gender ?? '', {
         validators: [Validators.required],
         nonNullable: true,
       }),
-      birthDate: new FormControl<Date>(this.celebrity().birthDate, {
+      birthDate: new FormControl<Date>(this.celebrity()?.birthDate ?? new Date(), {
         validators: [Validators.required],
         nonNullable: true,
       }),
       roles: new FormControl<string[]>(
-        this.celebrity().roles, {
+        this.celebrity()?.roles ?? [], {
           validators: [Validators.required],
           nonNullable: true,
         }),
       currRole: new FormControl<string>('', { nonNullable: true }),
-      info: new FormControl<string>(this.celebrity().info, {
+      info: new FormControl<string>(this.celebrity()?.info ?? '', {
         validators: [Validators.required],
         nonNullable: true,
       }),

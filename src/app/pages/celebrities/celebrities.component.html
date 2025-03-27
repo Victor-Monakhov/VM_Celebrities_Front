@@ -2,7 +2,8 @@
   <app-celebrities-header
     ngSkipHydration
     (showAll)="onShowAll()"
-    (reset)="onReset()">
+    (reset)="onReset()"
+    (addNew)="onAddCelebrity()">
   </app-celebrities-header>
   <app-celebrities-content
     [celebrities]="celebrities()"
