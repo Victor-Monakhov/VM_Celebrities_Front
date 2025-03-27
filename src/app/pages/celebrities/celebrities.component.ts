@@ -4,8 +4,8 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { catchError, debounceTime, EMPTY, exhaustMap, filter, Subject, switchMap } from 'rxjs';
 
-import { CelebritiesContentComponent } from './components/celebrities-content/celebrities-content.component';
 import { CelebritiesAddEditDialogComponent } from './components/celebrities-add-edit-dialog/celebrities-add-edit-dialog.component';
+import { CelebritiesContentComponent } from './components/celebrities-content/celebrities-content.component';
 import { CelebritiesHeaderComponent } from './components/celebrities-header/celebrities-header.component';
 import { ICelebrity } from './interfaces/celebrities.interface';
 import { CelebritiesService } from './services/celebrities.service';
