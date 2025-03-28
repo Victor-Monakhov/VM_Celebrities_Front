@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
+import { environment } from '../../../../environment';
 import { ICelebrity } from '../interfaces/celebrities.interface';
 
 @Injectable({
@@ -11,30 +12,25 @@ import { ICelebrity } from '../interfaces/celebrities.interface';
 export class CelebritiesService {
 
   private readonly http = inject(HttpClient);
+  private url = environment.apiURL;
 
   public getAllCelebrities(isReset: boolean): Observable<ICelebrity[]> {
-    return this.http.get<ICelebrity[]>(`http://localhost:5263/api/celebrity/all?reset=${isReset}`);
+    return this.http.get<ICelebrity[]>(`${this.url}all?reset=${isReset}`);
   }
 
   public removeCelebrity(id: number): Observable<ICelebrity[]> {
-    return this.http.delete<ICelebrity[]>(`http://localhost:5263/api/celebrity/delete/${id}`);
+    return this.http.delete<ICelebrity[]>(`${this.url}delete/${id}`);
   }
 
   public searchCelebrity(name: string): Observable<ICelebrity[]> {
-    return this.http.get<ICelebrity[]>(`http://localhost:5263/api/celebrity/search?name=${name}`);
+    return this.http.get<ICelebrity[]>(`${this.url}search?name=${name}`);
   }
 
   public editCelebrity(celebrity: ICelebrity): Observable<ICelebrity[]> {
-    return this.http.put<ICelebrity[]>(
-      `http://localhost:5263/api/celebrity/update/${celebrity.id}`,
-      celebrity,
-    );
+    return this.http.put<ICelebrity[]>(`${this.url}update/${celebrity.id}`, celebrity);
   }
 
   public addCelebrity(celebrity: ICelebrity): Observable<ICelebrity[]> {
-    return this.http.post<ICelebrity[]>(
-      `http://localhost:5263/api/celebrity/add`,
-      celebrity,
-    );
+    return this.http.post<ICelebrity[]>(`${this.url}add`, celebrity);
   }
 }
